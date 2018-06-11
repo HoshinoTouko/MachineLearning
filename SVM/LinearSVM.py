@@ -162,7 +162,7 @@ def main():
     linearSVM = LinearSVM(shuffle_features, shuffle_labels)
 
     linearSVM.smo_train(1000)
-    print('Accuracy: %.2f%%' % linearSVM.analysis() * 100)
+    print('Accuracy: %.2f%%' % (linearSVM.analysis() * 100))
     print(linearSVM.lagrange_multiplier)
 
     # Draw plot
