@@ -69,8 +69,8 @@ def generate_circle(times, r, noise):
 
 def generate_concentric_circles():
     res = []
-    res.append(generate_circle(300, 5, math.e))
-    res.append(generate_circle(300, 3, math.e))
+    res.append(generate_circle(50, 5, math.e))
+    res.append(generate_circle(50, 3, math.e))
     return res
 
 
