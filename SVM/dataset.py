@@ -12,6 +12,24 @@ import random
 import math
 
 
+def generate_sin_data(times, center_x, rand):
+    res = []
+    for _ in range(times):
+        rand_x = center_x + 3 * math.pi * (random.random() - 1)
+        res.append((
+            rand_x,
+            math.sin(rand_x) + rand * (random.random() + 0.2)
+        ))
+    return res
+
+
+def generate_sin_data_for_test():
+    res = []
+    res.append(generate_sin_data(30, 10, 2))
+    res.append(generate_sin_data(30, 10, -2))
+    return res
+
+
 def generate_two_dimensional_linear_data(center_x, center_y, center_range, k, times, up_or_down):
     res = []
 
@@ -77,6 +95,7 @@ def generate_concentric_circles():
 if __name__ == '__main__':
     data = generate_concentric_circles()
     data = generate_two_dimensional_linear_data_for_test()
+    data = generate_sin_data_for_test()
     plt.scatter(list(map(lambda x: x[0], data[0])), list(map(lambda x: x[1], data[0])))
     plt.scatter(list(map(lambda x: x[0], data[1])), list(map(lambda x: x[1], data[1])))
     plt.show()

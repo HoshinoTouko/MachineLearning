@@ -28,7 +28,7 @@ class GaussSVM:
         self.kkt_list = []
         self.rebuild_kkt_list()
 
-    def kernel(self, a, b, o=2):
+    def kernel(self, a, b, o=3):
         tmp = a - b
         norm = np.dot(tmp, tmp)
         return math.exp(- norm ** 2 / (2 * o * o))
@@ -158,7 +158,7 @@ class GaussSVM:
 
 
 def main():
-    data = dt.generate_concentric_circles()
+    data = dt.generate_sin_data_for_test()
     features = [x for x in itertools.chain(data[0], data[1])]
     labels = [-1 for x in range(len(data[0]))]
     labels += [1 for x in range(len(data[1]))]
