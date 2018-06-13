@@ -29,9 +29,9 @@ def main():
             labels.append(-1)
 
     x_train, x_test, y_train, y_test = train_test_split(
-        features, labels, test_size=0.3, random_state=70)
+        features, labels, test_size=0.25, random_state=50)
 
-    svm = GaussSVM(x_train, y_train, c=10)
+    svm = GaussSVM(x_train, y_train, c=3)
     svm.smo_train(1000, 0.98)
     print('Accuracy: %.2f%%' % (svm.analysis(x_test, y_test) * 100))
 

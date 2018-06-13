@@ -18,13 +18,14 @@ import matplotlib.pyplot as plt
 
 
 class GaussSVM:
-    def __init__(self, features, labels, c=10E100):
+    def __init__(self, features, labels, c=10E100, o=30):
         self.features = np.array(features)
         self.labels = np.array(labels)
         self.num_of_samples = self.features.shape[0]
         self.lagrange_multiplier = np.zeros(self.num_of_samples)
         self.b = 0.  # 偏移量
         self.c = c
+        self.o = o
         # Maintain a kkt list
         self.kkt_list = []
         self.rebuild_kkt_list()
@@ -32,10 +33,15 @@ class GaussSVM:
         self.pre_predict = []
         self.rebuild_pre_predict_list()
 
-    def kernel(self, a, b, o=35):
+    def kernel(self, a, b):
+        o = self.o
         tmp = a - b
         norm = np.dot(tmp, tmp)
-        return math.exp(- norm ** 2 / (2 * o * o))
+        try:
+            ans = math.exp(- norm ** 2 / (2 * o * o))
+        except OverflowError:
+            ans = float('inf')
+        return ans
 
     def calculate_b(self):
         # Page 125 Formula 6.18
