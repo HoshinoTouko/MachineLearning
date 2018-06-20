@@ -95,7 +95,7 @@ def generate_concentric_circles():
 if __name__ == '__main__':
     data = generate_concentric_circles()
     data = generate_two_dimensional_linear_data_for_test()
-    data = generate_sin_data_for_test()
+    # data = generate_sin_data_for_test()
     plt.scatter(list(map(lambda x: x[0], data[0])), list(map(lambda x: x[1], data[0])))
     plt.scatter(list(map(lambda x: x[0], data[1])), list(map(lambda x: x[1], data[1])))
     plt.show()
