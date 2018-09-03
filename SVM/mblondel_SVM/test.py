@@ -8,8 +8,8 @@
 @Desc: 
 """
 from SVM.dataset import generate_concentric_circles
-from SVM.mblondel_SVM import SVM
-from SVM.mblondel_SVM import gaussian_kernel
+from SVM.mblondel_SVM.mblondel_SVM import SVM
+from SVM.mblondel_SVM.mblondel_SVM import gaussian_kernel
 
 import numpy as np
 
