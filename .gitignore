@@ -1,8 +1,8 @@
 # Something
 dataset/
 
-# VSCode
-.code/
+# VSCode configuration
+.vscode/
 
 # IDEA
 .idea/
