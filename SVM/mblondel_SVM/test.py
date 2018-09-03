@@ -7,7 +7,7 @@
 @Created at: 2018-06-06 20:13
 @Desc: 
 """
-from SVM.dataset import generate_concentric_circles
+from data.fake.dataset import generate_concentric_circles
 from SVM.mblondel_SVM.mblondel_SVM import SVM
 from SVM.mblondel_SVM.mblondel_SVM import gaussian_kernel
 

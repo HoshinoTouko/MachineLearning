@@ -10,7 +10,7 @@
 import itertools
 import random
 
-import SVM.dataset as dt
+import data.fake.dataset as dt
 import numpy as np
 
 import matplotlib.pyplot as plt
