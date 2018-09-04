@@ -38,7 +38,7 @@ class SimpleLinearRegression:
         raise Exception('Not full rank matrix not support')
 
 
-def main():
+def test_simple_linear_regression():
     data, w = gen_random_linear_regression_data(10, 50)
     features, labels = list(map(lambda x: x[0], data)), list(map(lambda x: x[1], data))
     linearInstance = SimpleLinearRegression(features, labels)
@@ -53,4 +53,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    test_simple_linear_regression()
