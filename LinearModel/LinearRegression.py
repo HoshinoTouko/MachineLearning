@@ -10,7 +10,7 @@ import numpy as np
 from data.fake.regression import gen_random_linear_regression_data
 
 
-class LinearRegression:
+class SimpleLinearRegression:
     def __init__(self, features, labels):
         self.features = features
         self.labels = labels
@@ -35,13 +35,13 @@ class LinearRegression:
             _tmp = np.asmatrix(np.dot(features.T, features))
             res = np.dot(np.dot(_tmp.I, features.T), labels)
             return np.array(res)
-        return False
+        raise Exception('Not full rank matrix not support')
 
 
 def main():
     data, w = gen_random_linear_regression_data(10, 50)
     features, labels = list(map(lambda x: x[0], data)), list(map(lambda x: x[1], data))
-    linearInstance = LinearRegression(features, labels)
+    linearInstance = SimpleLinearRegression(features, labels)
     # Check if full rank
     # print(linearInstance.is_full_rank(features))
     train_res = linearInstance.train()[0]
