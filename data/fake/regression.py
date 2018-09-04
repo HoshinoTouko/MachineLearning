@@ -30,7 +30,7 @@ def generate_linear(w, b, num):
 
 def gen_random_linear_regression_data(dimension, num=20):
     w = []
-    b = random.randint(-20, 20) * 40
+    b = random.randint(10, 20) * 40 * (1 if random.random() > 0.5 else -1)
     for _ in range(dimension):
         w.append(random.randint(-20, 20))
     return generate_linear(w, b, num), w, b
