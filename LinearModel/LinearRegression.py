@@ -12,7 +12,8 @@ from data.fake.regression import gen_random_linear_regression_data
 
 class SimpleLinearRegression:
     def __init__(self, features, labels):
-        self.features = features
+        self._features = features
+        self.features = np.c_[features, np.ones([len(features)])]
         self.labels = labels
 
     @classmethod
@@ -32,24 +33,32 @@ class SimpleLinearRegression:
         features = np.array(self.features)
         labels = np.array(self.labels)
         if self.is_full_rank(features):
+            # Calculate w
             _tmp = np.asmatrix(np.dot(features.T, features))
-            res = np.dot(np.dot(_tmp.I, features.T), labels)
-            return np.array(res)
+            w_res = np.array(np.dot(np.dot(_tmp.I, features.T), labels))[0]
+            w_res = w_res[:-1]
+            # Calculate b
+            b_res = np.mean(self.labels) - np.dot(w_res, np.mean(self._features, axis=0))
+            # Return
+            return w_res, b_res
         raise Exception('Not full rank matrix not support')
 
 
 def test_simple_linear_regression():
-    data, w = gen_random_linear_regression_data(10, 50)
+    data, w, b = gen_random_linear_regression_data(10, 50)
     features, labels = list(map(lambda x: x[0], data)), list(map(lambda x: x[1], data))
     linearInstance = SimpleLinearRegression(features, labels)
     # Check if full rank
     # print(linearInstance.is_full_rank(features))
-    train_res = linearInstance.train()[0]
+    train_w, train_b = linearInstance.train()
 
     # Analysis
     w = np.array(w, dtype=np.float)
-    print(train_res, w)
-    print('Error(RMSE): %.6f' % np.sqrt((train_res - w) ** 2).mean())
+    print(train_w, w)
+    print(train_b, b)
+
+    print('Error(RMSE): %.6f' % np.sqrt((train_w - w) ** 2).mean())
+    print('Train''s b: %.6f, correct b: %.6f' % (train_b, b))
 
 
 if __name__ == '__main__':
