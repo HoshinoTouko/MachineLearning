@@ -11,7 +11,7 @@ import itertools
 import random
 import math
 
-import data.fake.dataset as dt
+import data.fake.classification as dt
 import numpy as np
 
 import matplotlib.pyplot as plt
