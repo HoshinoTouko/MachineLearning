@@ -15,8 +15,11 @@ class NaiiveBayesClassifier:
         self.features = features
         self.labels = labels
         self.conditional_probs = None
+        self.discrete = True
     
     def train(self, discrete=True):
+        self.discrete = discrete
+        # 
         mat_features = np.asmatrix(self.features)
         mat_features_T = mat_features.T
         mat_labels = np.asmatrix(self.labels)
@@ -37,20 +40,42 @@ class NaiiveBayesClassifier:
             feature_choices = _feature_posibilities[feature_num]
 
             for _posibility in feature_choices:
-                _feature_coditional_prob[_posibility] = {}
-                for _label in label_choices:
-                    match_features = np.where(_features==_posibility)[0]
-                    match_labels = np.where(_labels==_label)[0]
-                    _matches = set(match_features) & set(match_labels)
-                    _feature_coditional_prob[_posibility][_label] = \
-                        float(len(_matches)) / num_of_label[_label]
-
+                # Discrete features
+                if discrete:
+                    _feature_coditional_prob[_posibility] = {}
+                    for _label in label_choices:
+                        match_features = np.where(_features==_posibility)[0]
+                        match_labels = np.where(_labels==_label)[0]
+                        _matches = set(match_features) & set(match_labels)
+                        # If discrete, this value will store the prob
+                        _feature_coditional_prob[_posibility][_label] = \
+                            float(len(_matches)) / num_of_label[_label]
+                # Continuous features
+                else:
+                    for _label in label_choices:
+                        match_labels = np.where(_labels==_label)
+                        match_features = _features[match_labels]
+                        # If continuous, this value will store a tuple
+                        # (Mean, Standard deviation, variance)
+                        _feature_coditional_prob[_label] = \
+                            (match_features.mean(), match_features.std(), match_features.var())
+                
             _conditional_probs.append(_feature_coditional_prob)
 
         print('Finished')
-        print(_conditional_probs)
+        # print(_conditional_probs)
         self.conditional_probs = _conditional_probs
+        return self.conditional_probs
     
+
+    @classmethod
+    def _calc(cls, x, _tuple):
+        mean = _tuple[0]
+        std = _tuple[1]
+        var = _tuple[2]
+        return 1 / (np.sqrt(2 * np.pi) / std) * np.exp(-np.power((x - mean), 2)/(2 * var))
+
+
     def predict(self, feature):
         if self.conditional_probs is None:
             raise Exception('Haven\'t been trained.')
@@ -61,9 +86,16 @@ class NaiiveBayesClassifier:
             if _label not in prob_dict.keys():
                 prob_dict[_label] = 1
             
-            for feature_num in range(len(feature)):
-                prob_dict[_label] *= \
-                    self.conditional_probs[feature_num][feature[feature_num]][_label]
+            if self.discrete:
+                for feature_num in range(len(feature)):
+                    prob_dict[_label] *= self.conditional_probs[feature_num][feature[feature_num]][_label]
+            else:
+                for feature_num in range(len(feature)):
+                    prob_dict[_label] *= \
+                        self._calc(
+                            feature[feature_num],
+                            self.conditional_probs[feature_num][_label]
+                        )
 
         return max(prob_dict, key=prob_dict.get)
     
@@ -82,7 +114,7 @@ def test(discrete=True):
     labels = list(map(lambda x: x[1], data))
 
     bayes1 = NaiiveBayesClassifier(features, labels)
-    bayes1.train(discrete=True)
+    bayes1.train(discrete=discrete)
 
     # Analysis
     data, _ = generate_bayes_fake_data_for_test(times=100, discrete=discrete)
@@ -93,10 +125,12 @@ def test(discrete=True):
 
 
 def test_continuous():
+    print('\nTest continuous function...')
     test(discrete=False)
 
 
 def test_discrete():
+    print('\nTest discrete function...')
     test(discrete=True)
 
 def main():
