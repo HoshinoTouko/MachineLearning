@@ -9,7 +9,7 @@ from prettytable import PrettyTable
 import random
 
 
-def generate_bayes_fake_data(solution, times=10):
+def generate_bayes_fake_data(solution, times=10, discrete=True):
     # Resolve solution
     feature_list = solution['feature_list']
     # positive_list = solution['positive_list']
@@ -20,7 +20,10 @@ def generate_bayes_fake_data(solution, times=10):
     for _ in range(times):
         _tmp_data = []
         for i in range(len_of_data):
-            choice = random.choice(feature_list[i])
+            if discrete:
+                choice = random.choice(feature_list[i])
+            else:
+                choice = random.uniform(min(feature_list[i]), max(feature_list[i]))
             _tmp_data.append(choice)
         res.append((_tmp_data, run_solution(solution, _tmp_data)))
     return res, solution
@@ -38,7 +41,7 @@ def run_solution(solution, data):
     return int(good / len(positive_list) > positive_prob)
 
 
-def generate_bayes_fake_data_for_test():
+def generate_bayes_discrete_fake_data_for_test(times=30):
     feature_list = [
         [1, 2, 3, 4],
         [1, 2, 3],
@@ -57,7 +60,7 @@ def generate_bayes_fake_data_for_test():
         'positive_list': positive_list, 
         'positive_prob': positive_prob
     }
-    return generate_bayes_fake_data(solution, 30)
+    return generate_bayes_fake_data(solution, times)
 
 
 def main():
