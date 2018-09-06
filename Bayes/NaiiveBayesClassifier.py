@@ -76,8 +76,8 @@ class NaiiveBayesClassifier:
         print('Analysis result: %.4f%%' % (100 * acc / total))
 
 
-def test_discrete():
-    data, _ = generate_bayes_fake_data_for_test(times=100, discrete=True)
+def test(discrete=True):
+    data, _ = generate_bayes_fake_data_for_test(times=100, discrete=discrete)
     features = list(map(lambda x: x[0], data))
     labels = list(map(lambda x: x[1], data))
 
@@ -85,7 +85,7 @@ def test_discrete():
     bayes1.train(discrete=True)
 
     # Analysis
-    data, _ = generate_bayes_fake_data_for_test(times=100, discrete=True)
+    data, _ = generate_bayes_fake_data_for_test(times=100, discrete=discrete)
     features = list(map(lambda x: x[0], data))
     labels = list(map(lambda x: x[1], data))
 
@@ -93,8 +93,11 @@ def test_discrete():
 
 
 def test_continuous():
-    pass
+    test(discrete=False)
 
+
+def test_discrete():
+    test(discrete=True)
 
 def main():
     test_discrete()
