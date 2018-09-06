@@ -12,16 +12,12 @@ import random
 def generate_bayes_fake_data(solution, times=10):
     # Resolve solution
     feature_list = solution['feature_list']
-    positive_list = solution['positive_list']
-    positive_prob = solution['positive_prob']
-    # Check
-    if len(feature_list) != len(positive_list):
-        raise Exception('Length of data not match.')
+    # positive_list = solution['positive_list']
+    # positive_prob = solution['positive_prob']
 
     len_of_data = len(feature_list)
     res = []
     for _ in range(times):
-        good = 0.
         _tmp_data = []
         for i in range(len_of_data):
             choice = random.choice(feature_list[i])
