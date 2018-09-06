@@ -7,6 +7,7 @@ Copyright (c) 2018 Hoshino Touko
 '''
 from prettytable import PrettyTable
 import random
+import numpy as np
 
 
 def generate_bayes_fake_data(solution, times=10, discrete=True):
@@ -25,23 +26,27 @@ def generate_bayes_fake_data(solution, times=10, discrete=True):
             else:
                 choice = random.uniform(min(feature_list[i]), max(feature_list[i]))
             _tmp_data.append(choice)
-        res.append((_tmp_data, run_solution(solution, _tmp_data)))
+        res.append((_tmp_data, run_solution(solution, _tmp_data, discrete)))
     return res, solution
 
 
-def run_solution(solution, data):
+def run_solution(solution, data, discrete=True):
     # feature_list = solution['feature_list']
     positive_list = solution['positive_list']
     positive_prob = solution['positive_prob']
 
     good = 0.
     for i in range(len(data)):
-        if data[i] in positive_list[i]:
-            good += 1
+        if discrete:
+            if data[i] in positive_list[i]:
+                good += 1
+        else:
+            if data[i] > np.average(positive_list[i]):
+                good += 1
     return int(good / len(positive_list) > positive_prob)
 
 
-def generate_bayes_discrete_fake_data_for_test(times=30):
+def generate_bayes_fake_data_for_test(times=30, discrete=True):
     feature_list = [
         [1, 2, 3, 4],
         [1, 2, 3],
@@ -60,11 +65,11 @@ def generate_bayes_discrete_fake_data_for_test(times=30):
         'positive_list': positive_list, 
         'positive_prob': positive_prob
     }
-    return generate_bayes_fake_data(solution, times)
+    return generate_bayes_fake_data(solution, times, discrete)
 
 
 def main():
-    data, solution = generate_bayes_fake_data_for_test()
+    data, solution = generate_bayes_fake_data_for_test(discrete=True)
     ptt = PrettyTable()
     ptt.field_names = ['Features', 'Labels']
     for d in data:
