@@ -9,7 +9,12 @@ from prettytable import PrettyTable
 import random
 
 
-def generate_bayes_fake_data(feature_list, positive_list, positive_prob, times=10):
+def generate_bayes_fake_data(solution, times=10):
+    # Resolve solution
+    feature_list = solution['feature_list']
+    positive_list = solution['positive_list']
+    positive_prob = solution['positive_prob']
+    # Check
     if len(feature_list) != len(positive_list):
         raise Exception('Length of data not match.')
 
@@ -17,14 +22,25 @@ def generate_bayes_fake_data(feature_list, positive_list, positive_prob, times=1
     res = []
     for _ in range(times):
         good = 0.
-        _tmp = []
+        _tmp_data = []
         for i in range(len_of_data):
             choice = random.choice(feature_list[i])
-            _tmp.append(choice)
-            if choice in positive_list[i]:
-                good += 1
-        res.append((_tmp, int(good / len_of_data > positive_prob)))
-    return res
+            _tmp_data.append(choice)
+        res.append((_tmp_data, run_solution(solution, _tmp_data)))
+    return res, solution
+
+
+def run_solution(solution, data):
+    # feature_list = solution['feature_list']
+    positive_list = solution['positive_list']
+    positive_prob = solution['positive_prob']
+
+    good = 0.
+    for i in range(len(data)):
+        if data[i] in positive_list[i]:
+            good += 1
+    return int(good / len(positive_list) > positive_prob)
+
 
 def generate_bayes_fake_data_for_test():
     feature_list = [
@@ -39,16 +55,24 @@ def generate_bayes_fake_data_for_test():
         [3, 4, 5],
         [2],
     ]
-    return generate_bayes_fake_data(feature_list, positive_list, 0.5, 30)
+    positive_prob = 0.5
+    solution = {
+        'feature_list': feature_list, 
+        'positive_list': positive_list, 
+        'positive_prob': positive_prob
+    }
+    return generate_bayes_fake_data(solution, 30)
 
 
 def main():
-    data = generate_bayes_fake_data_for_test()
+    data, solution = generate_bayes_fake_data_for_test()
     ptt = PrettyTable()
     ptt.field_names = ['Features', 'Labels']
     for d in data:
         ptt.add_row(d)
     print(ptt)
+    print('Solution')
+    print(solution)
 
 if __name__ == '__main__':
     main()
