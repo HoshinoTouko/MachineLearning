@@ -5,6 +5,7 @@ Author: Touko Hoshino
 -----
 Copyright (c) 2018 Hoshino Touko
 '''
+from sklearn.model_selection import train_test_split
 import numpy as np
 
 from data.fake.bayes import generate_bayes_fake_data_for_test
@@ -21,16 +22,16 @@ class BPNN:
         self.labels = labels
         self.NN = SingleHiddenLayerBPNNArchitecture(input_layer, hidden_layer, output_layer)
     
-    def train(self, times=100):
+    def train(self, times=100, break_acc=0.9):
         for _time in range(times):
             self.NN.train(
                 self.features[_time % self.num_of_data], 
                 self.labels[_time % self.num_of_data]
             )
-            if _time % 20 == 0:
+            if _time % 700 == 0:
                 acc = self.analysis()
                 print('Trained %d times, get an accurate of %.2f%%' % (_time, 100 * acc))
-                if acc > 0.9:
+                if acc > break_acc:
                     break
     
     def analysis(self, features=None, labels=None):
@@ -53,18 +54,11 @@ class BPNN:
 
 
 class SingleHiddenLayerBPNNArchitecture:
-    def get_new_limit(self):
-        if self.times < 2500:
-            self.l1 = 1 - self.times * 0.85 / 2500
-            self.l2 = self.l1
-        else:
-            self.l1 = 0.15
-            self.l2 = 0.15
 
     def __init__(self, input_layer, hidden_layer, output_layer):
         # Init limit
-        self.l1 = 0.1
-        self.l2 = 0.1
+        self.l1 = 0.05
+        self.l2 = 0.2
         self.times = 0
         # Init layers
         self.input_layer = input_layer
@@ -114,7 +108,6 @@ class SingleHiddenLayerBPNNArchitecture:
         self.threshold_hidden -= self.l2 * _ehs
 
         self.times += 1
-        self.get_new_limit()
 
 
     def show(self):
@@ -152,12 +145,19 @@ def main():
 
         label = list(('0000' + str(bin(int(labelset[i]))).replace('0b', ''))[-4:])
         labels.append(list(map(int, label)))
+    
+    # Split
+    x_train, x_test, y_train, y_test = train_test_split(
+        features, labels, test_size=0.7)
 
     # print(features)
     # print(labels)
     print('Training...')
-    bpnn = BPNN(features, labels, 256, 96, 4)
-    bpnn.train(99999)
+    bpnn = BPNN(x_train, y_train, 256, 30, 4)
+    bpnn.train(99999, break_acc=0.99)
+    # Test
+    print('Testing...')
+    print('Test result: %.4f%%' % (bpnn.analysis(x_test, y_test) * 100))
 
     # data, _ = generate_bayes_fake_data_for_test(times=100, discrete=True)
     # features = list(map(lambda x: x[0], data))
