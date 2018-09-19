@@ -1,3 +1,4 @@
 prettytable
 numpy
 matplotlib
+sklearn
