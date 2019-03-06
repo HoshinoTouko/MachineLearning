@@ -133,9 +133,11 @@ def test_discrete():
     print('\nTest discrete function...')
     test(discrete=True)
 
+
 def main():
     test_discrete()
     test_continuous()
+
 
 if __name__ == '__main__':
     main()

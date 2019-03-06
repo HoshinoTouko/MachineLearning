@@ -51,16 +51,16 @@ def generate_two_dimensional_linear_data(center_x, center_y, center_range, k, ti
     return res
 
 
-def generate_two_dimensional_linear_data_for_test():
+def generate_two_dimensional_linear_data_for_test(times=30):
     center_range = 10
     center_x = 2 * center_range * random.random() - center_range
     center_y = 2 * center_range * random.random() - center_range
     k = 1 / random.uniform(-1, 1)
     res = []
     res.append(generate_two_dimensional_linear_data(
-        center_x, center_y, center_range, k, 30, -1))
+        center_x, center_y, center_range, k, times, -1))
     res.append(generate_two_dimensional_linear_data(
-        center_x, center_y, center_range, k, 30, 1))
+        center_x, center_y, center_range, k, times, 1))
 
     return res
 
