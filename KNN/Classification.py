@@ -15,6 +15,7 @@ import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import itertools
 import data.fake.classification as dt
+from Utils.Sampling import UniformSampling
 
 
 class KNNClassifier:
@@ -62,16 +63,21 @@ def main():
             features.append(list(map(float, _line[:2])))
             labels.append(_line[2])
 
-    features_train, features_test, labels_train, labels_test = train_test_split(
-        features, labels, test_size=0.75, random_state=50)\
+    print('Sampling...')
+    # features_train, features_test, \
+    # labels_train, labels_test = train_test_split(
+    #     features, labels, test_size=0.75, random_state=50)
+    features_train, features_test, \
+        labels_train, labels_test = UniformSampling.sampling(
+            features, labels, test_size=0.75)
 
     _KNNClassifier = KNNClassifier(features_train, labels_train)
 
+    print('Analysing...')
     _KNNClassifier.analyse(features_test, labels_test)
 
     # Draw
-
-    # Draw plot
+    print('Draw scatter graph...')
     for i in range(len(features_train)):
         color = 'green'
         if labels_train[i] == 'A':
