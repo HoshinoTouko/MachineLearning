@@ -1,5 +1,6 @@
 # Something
 dataset/
+data/fake/IgnoredRareCategory.py
 
 # VSCode configuration
 .vscode/
