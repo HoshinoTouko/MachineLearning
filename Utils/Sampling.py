@@ -26,7 +26,7 @@ class UniformSampling:
         return np.linalg.norm(a - b)
 
     @classmethod
-    def sampling(cls, features, labels, test_size=0.3):
+    def sampling(cls, features, labels, test_size=0.85):
         count = len(features)
         if len(labels) != count:
             raise Exception('Numbers of features and labels are not matched.')
