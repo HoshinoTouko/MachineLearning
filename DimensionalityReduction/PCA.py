@@ -32,7 +32,7 @@ class PCA:
         # print(feature_vector)
 
         reduce_matrix = feature_vector[np.argsort(-eigenvalue)[:self.target_dimension]]
-        print('%s dimension reduce_matrix.' % self.target_dimension)
+        print('%s dimension(s) reduce_matrix.' % self.target_dimension)
         print(reduce_matrix)
 
         return np.matrix(self.features) * reduce_matrix.T
