@@ -39,27 +39,29 @@ class PCA:
 
 
 def main():
-    dots = three_dimension.generate_data()
-    three_dimension.show_data(dots)
+    dots, labels = three_dimension.generate_data()
+    three_dimension.show_data(dots, labels)
 
     pca = PCA(dots, 2)
     res = np.array(pca.process())
     # print(res)
 
     plt.title('Reduced three dimensions data.')
-    plt.scatter(res[:, 0], res[:, 1], c='b')
+    plt.scatter(res[np.argwhere(labels == 0), 0], res[np.argwhere(labels == 0), 1], c='b')
+    plt.scatter(res[np.argwhere(labels == 1), 0], res[np.argwhere(labels == 1), 1], c='g')
     plt.show()
     plt.close()
 
-    dots = two_dimension.generate_data()
-    two_dimension.show_data(dots)
+    dots, labels = two_dimension.generate_data()
+    two_dimension.show_data(dots, labels)
 
     pca = PCA(dots, 1)
     res = np.array(pca.process())
     # print(res)
 
     plt.title('Reduced two dimensions data.')
-    plt.scatter(res[:, 0], np.zeros(shape=res[:, 0].shape), c='b')
+    plt.scatter(res[np.argwhere(labels == 0), 0], np.zeros(shape=res[np.argwhere(labels == 0), 0].shape), c='b')
+    plt.scatter(res[np.argwhere(labels == 1), 0], np.zeros(shape=res[np.argwhere(labels == 0), 0].shape), c='g')
     plt.show()
     plt.close()
 

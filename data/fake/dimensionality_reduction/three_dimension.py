@@ -16,23 +16,29 @@ import matplotlib.pyplot as plt
 def generate_data():
     mean = np.array([1, 2, 3])
     cov = np.array(([2.5, 1, 0], [1, 2.5, 0], [0, 0, 0.2]))
-    dots = np.random.multivariate_normal(mean, cov, 400)
+    dots_a = np.random.multivariate_normal(mean, cov, 400)
 
-    return dots
+    mean = np.array([8, 4, 3])
+    cov = np.array(([2.5, 1, 0], [1, 2.5, 0], [0, 0, 0.2]))
+    dots_b = np.random.multivariate_normal(mean, cov, 400)
+
+    return np.concatenate((dots_a, dots_b)), \
+           np.array([0 for i in range(400)] + [1 for i in range(400)])
 
 
-def show_data(dots):
+def show_data(dots, labels):
     plt.subplot(111, projection='3d')
     plt.title('Three dimensions data')
-    plt.scatter(dots[:, 0], dots[:, 1], dots[:, 2], c='b')
+    plt.scatter(dots[np.where(labels == 0), 0], dots[np.where(labels == 0), 1], dots[:, 2], c='b')
+    plt.scatter(dots[np.where(labels == 1), 0], dots[np.where(labels == 1), 1], dots[:, 2], c='g')
     plt.show()
     plt.close()
 
 
 def main():
-    dots = generate_data()
+    features, labels = generate_data()
 
-    show_data(dots)
+    show_data(features, labels)
 
 
 if __name__ == '__main__':
