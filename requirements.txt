@@ -2,3 +2,4 @@ prettytable
 numpy
 matplotlib
 sklearn
+scipy
