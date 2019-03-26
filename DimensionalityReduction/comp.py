@@ -12,6 +12,7 @@ from DimensionalityReduction.LPP import LPP
 from DimensionalityReduction.PCA import PCA
 from data.fake.dimensionality_reduction import three_dimension
 
+import copy
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -20,7 +21,7 @@ def main():
     features, labels = three_dimension.generate_data()
     three_dimension.show_data(features, labels)
 
-    pca = PCA(features, 2)
+    pca = PCA(copy.deepcopy(features), 2)
     res = np.array(pca.process())
     # print(res)
 
@@ -30,7 +31,7 @@ def main():
     plt.show()
     plt.close()
 
-    dne = DNE(features, labels, 2)
+    dne = DNE(copy.deepcopy(features), labels, 2)
     res = np.array(dne.process())
     # print(res)
 
@@ -40,7 +41,7 @@ def main():
     plt.show()
     plt.close()
 
-    lpp = LPP(features, 2)
+    lpp = LPP(copy.deepcopy(features), 2, t=200)
     res = np.array(lpp.process())
     # print(res)
 
