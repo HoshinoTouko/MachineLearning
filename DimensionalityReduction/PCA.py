@@ -39,10 +39,10 @@ class PCA:
 
 
 def main():
-    dots, labels = three_dimension.generate_data()
-    three_dimension.show_data(dots, labels)
+    features, labels = three_dimension.generate_data()
+    three_dimension.show_data(features, labels)
 
-    pca = PCA(dots, 2)
+    pca = PCA(features, 2)
     res = np.array(pca.process())
     # print(res)
 
