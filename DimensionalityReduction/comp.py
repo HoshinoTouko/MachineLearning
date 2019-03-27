@@ -8,6 +8,7 @@
 @Desc: 
 """
 from DimensionalityReduction.DNE import DNE
+from DimensionalityReduction.LDNE import LDNE
 from DimensionalityReduction.LPP import LPP
 from DimensionalityReduction.PCA import PCA
 from data.fake.dimensionality_reduction import three_dimension
@@ -18,6 +19,8 @@ import matplotlib.pyplot as plt
 
 
 def main():
+    marker = 'x'
+
     features, labels = three_dimension.generate_data()
     three_dimension.show_data(features, labels)
 
@@ -26,8 +29,8 @@ def main():
     # print(res)
 
     plt.title('PCA')
-    plt.scatter(res[np.argwhere(labels == 0), 0], res[np.argwhere(labels == 0), 1], c='b')
-    plt.scatter(res[np.argwhere(labels == 1), 0], res[np.argwhere(labels == 1), 1], c='g')
+    plt.scatter(res[np.argwhere(labels == 0), 0], res[np.argwhere(labels == 0), 1], c='b', marker=marker)
+    plt.scatter(res[np.argwhere(labels == 1), 0], res[np.argwhere(labels == 1), 1], c='g', marker=marker)
     plt.show()
     plt.close()
 
@@ -36,8 +39,8 @@ def main():
     # print(res)
 
     plt.title('DNE')
-    plt.scatter(res[np.argwhere(labels == 0), 0], res[np.argwhere(labels == 0), 1], c='b')
-    plt.scatter(res[np.argwhere(labels == 1), 0], res[np.argwhere(labels == 1), 1], c='g')
+    plt.scatter(res[np.argwhere(labels == 0), 0], res[np.argwhere(labels == 0), 1], c='b', marker=marker)
+    plt.scatter(res[np.argwhere(labels == 1), 0], res[np.argwhere(labels == 1), 1], c='g', marker=marker)
     plt.show()
     plt.close()
 
@@ -46,8 +49,18 @@ def main():
     # print(res)
 
     plt.title('LPP')
-    plt.scatter(res[np.argwhere(labels == 0), 0], res[np.argwhere(labels == 0), 1], c='b')
-    plt.scatter(res[np.argwhere(labels == 1), 0], res[np.argwhere(labels == 1), 1], c='g')
+    plt.scatter(res[np.argwhere(labels == 0), 0], res[np.argwhere(labels == 0), 1], c='b', marker=marker)
+    plt.scatter(res[np.argwhere(labels == 1), 0], res[np.argwhere(labels == 1), 1], c='g', marker=marker)
+    plt.show()
+    plt.close()
+
+    ldne = LDNE(copy.deepcopy(features), labels, 2, t=10)
+    res = np.array(ldne.process())
+    # print(res)
+
+    plt.title('LDNE')
+    plt.scatter(res[np.argwhere(labels == 0), 0], res[np.argwhere(labels == 0), 1], c='b', marker=marker)
+    plt.scatter(res[np.argwhere(labels == 1), 0], res[np.argwhere(labels == 1), 1], c='g', marker=marker)
     plt.show()
     plt.close()
 
