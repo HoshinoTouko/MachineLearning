@@ -19,7 +19,7 @@ def forward_alg(
 
     def alpha(order: int, status: int) -> float:
         seq_item = prescribed_seq[order]
-        if order == 1:
+        if order == 0:
             return mat_pi[status] * mat_b[status][seq_item]
 
         alp_prob: float = 0.
