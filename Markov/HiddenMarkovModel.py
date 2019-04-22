@@ -20,12 +20,12 @@ def forward_alg(
     def alpha(order: int, status: int) -> float:
         seq_item = prescribed_seq[order]
         if order == 0:
-            return mat_pi[status] * mat_b[status][seq_item]
+            return mat_pi[status] * mat_b[seq_item][status]
 
         alp_prob: float = 0.
         for i in range(n):
             alp_prob += alpha(order-1, i) * mat_a[i][status]
-        return alp_prob * mat_b[status][seq_item]
+        return alp_prob * mat_b[seq_item][status]
 
     prob: int = 0.
     for ii in range(n):
